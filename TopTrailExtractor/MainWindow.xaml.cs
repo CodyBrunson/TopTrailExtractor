@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
@@ -16,6 +17,11 @@ namespace TopTrailExtractor;
     /// </summary>
     public partial class MainWindow : Window
     {
+        
+        //TODO: Set up longest ride by year.
+        //TODO: Set up longest ride by horse.
+        //TODO: Add more 'fun facts'.
+        
         private string _csvFile = string.Empty;
         private ObservableCollection<string> _horseNames;
         private ObservableCollection<string> _rideYears;
@@ -35,15 +41,9 @@ namespace TopTrailExtractor;
             {
                 var selectedHorse = HorseNameCBox.SelectedItem.ToString();
                 var selectedRideYear = RideYearCBox.SelectedItem.ToString();
-                var totalMiles = 0.0d;
-                foreach (var ride in _rideData)
-                {
-                    if (selectedHorse is null || selectedRideYear is null)
-                        break;
-
-                    if (ride.RideDate.Contains(selectedRideYear) && ride.Horse == selectedHorse)
-                        totalMiles += ride.Distance;
-                }
+                var totalMiles = _rideData.TakeWhile(ride => selectedHorse is not null && selectedRideYear is not null)
+                    .Where(ride => selectedRideYear != null && ride.RideDate.Contains(selectedRideYear) && ride.Horse == selectedHorse)
+                    .Sum(ride => ride.Distance);
 
                 CurrentHorseTotalNumberLbl.Content = totalMiles.ToString("N");
             }
@@ -75,7 +75,9 @@ namespace TopTrailExtractor;
         private void UpdateYearTotal()
         {
             var currentlySelectedYear = RideYearCBox.SelectedItem.ToString();
-            var newYearTotal = _rideData.TakeWhile(ride => currentlySelectedYear is not null).Where(ride => currentlySelectedYear != null && ride.RideDate.Contains(currentlySelectedYear)).Sum(ride => ride.Distance);
+            var newYearTotal = _rideData.TakeWhile(ride => currentlySelectedYear is not null)
+                .Where(ride => currentlySelectedYear != null && ride.RideDate.Contains(currentlySelectedYear))
+                .Sum(ride => ride.Distance);
 
             RideYearTotalNumberLbl.Content = newYearTotal.ToString("N");
         }
@@ -99,11 +101,19 @@ namespace TopTrailExtractor;
             }
         }
 
+        private void SetupFunFacts()
+        {
+            var longestRide = _rideData.Aggregate((ride1, ride2) => ride1.Distance > ride2.Distance ? ride1 : ride2);
+            LongestRideMilesLbl.Content = longestRide.Distance.ToString("N");
+            LongestRideDateLbl.Content = longestRide.RideDate.Replace("\"", "")[..10];
+            LongestRideHorseNameLbl.Content = longestRide.Horse;
+        }
+        
         private void SetupData()
         {
-            _rideData = ExtractRideData();
-            _horseNames = ExtractHorseNames(_rideData);
-            _rideYears = ExtractRideYears(_rideData);
+            ExtractRideData();
+            SetupFunFacts();
+            Parallel.Invoke(ExtractHorseNames,ExtractRideYears);
 
             RideYearCBox.ItemsSource = _rideYears;
             RideYearCBox.SelectedIndex = 0;
@@ -112,10 +122,10 @@ namespace TopTrailExtractor;
             HorseNameCBox.SelectedIndex = 0;
         }
 
-        private ObservableCollection<String> ExtractRideYears(ObservableCollection<Ride> rideData)
+        private void ExtractRideYears()
         {
             var rideYears = new ObservableCollection<string>();
-            foreach (var ride in rideData)
+            foreach (var ride in _rideData)
             {
                 var cleanRideYear = ride.RideDate
                     .Replace("\"", "")
@@ -127,13 +137,13 @@ namespace TopTrailExtractor;
                 }
             }
 
-            return rideYears;
+            _rideYears = rideYears;
         }
 
-        private ObservableCollection<string> ExtractHorseNames(ObservableCollection<Ride> rideData)
+        private void ExtractHorseNames()
         {
             var horseNames = new ObservableCollection<string>();
-            foreach (var ride in rideData)
+            foreach (var ride in _rideData)
             {
                 var cleanHorseName = ride.Horse;
                 if (!horseNames.Contains(cleanHorseName))
@@ -141,13 +151,13 @@ namespace TopTrailExtractor;
                     horseNames.Add(cleanHorseName);
                 }
             }
-
-            return horseNames;
+            
+            _horseNames = horseNames;
         }
-        private ObservableCollection<Ride> ExtractRideData()
+        private void ExtractRideData()
         {
             var data = File.ReadAllLines(_csvFile);
-            var horses = new ObservableCollection<Ride>();
+            var rides = new ObservableCollection<Ride>();
 
             foreach (var line in data)
             {
@@ -170,11 +180,12 @@ namespace TopTrailExtractor;
                         Journal = lineData[11],
                         Horse = lineData[12].Replace("\"", "").Trim(),
                     };
-                    horses.Add(horse);
+                    rides.Add(horse);
                 }
 
                 
             }
-            return horses;
+
+            _rideData = rides;
         }
     }

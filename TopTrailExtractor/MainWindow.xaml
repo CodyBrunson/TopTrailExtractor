@@ -4,75 +4,84 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Top Trail Extractor" Height="450" Width="600">
+        Title="Top Trail Extractor" Height="300" Width="600">
+    
     <Grid Name="WindowGrid" ShowGridLines="True">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300"></ColumnDefinition>
-            <ColumnDefinition Width="200"></ColumnDefinition>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         
         <Button Name="DataUploadBtn"
                 Grid.Row="0" Grid.Column="0"
                 Height="25" Width="90"
                 Click="UploadData" 
-                HorizontalAlignment="Left">
-            File Select
-        </Button>
+                HorizontalAlignment="Left">File Select</Button>
+        
         <TextBox Name="FileNameTBox"
             Grid.Row="0" Grid.Column="0" 
             Grid.ColumnSpan="2"
             Height="25" Width="400" 
             IsReadOnly="True"
-            HorizontalAlignment="Right">
-            
-        </TextBox>
+            HorizontalAlignment="Right"/>
+        
         <Grid Name="ElementsGrid" ShowGridLines="True" Grid.Column="0" Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="25"></RowDefinition>
-                <RowDefinition Height="25"></RowDefinition>
-                <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
             
             <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center">Ride Year:</Label>
             <ComboBox Grid.Row="0" Grid.Column="1" Name="RideYearCBox"
                       Width="200"
-                      SelectionChanged="RideYearCBox_SelectionChanged"
-            >
-            </ComboBox>
+                      SelectionChanged="RideYearCBox_SelectionChanged"/>
             
             <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">Horse Name:</Label>
             <ComboBox Name="HorseNameCBox"
                       Width="200"
                       SelectionChanged="HorseNameCBox_SelectionChanged"
-                      Grid.Row="1" Grid.Column="1"
-            >
-            </ComboBox>
+                      Grid.Row="1" Grid.Column="1"/>
+            
+            <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center">Longest Ride </Label>
+            <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right">Miles: </Label>
+            <Label Grid.Row="4" Grid.Column="1" Name="LongestRideMilesLbl"/>
+            
+            <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right">Ride Date:</Label>
+            <Label Grid.Row="5" Grid.Column="1" Name="LongestRideDateLbl"/>
+            
+            <Label Grid.Row="6" Grid.Column="0" HorizontalAlignment="Right">Horse:</Label>
+            <Label Grid.Row="6" Grid.Column="1" Name="LongestRideHorseNameLbl"/>
         </Grid>
         
         <Grid Name="DataElementsGrid" ShowGridLines="True" Grid.Row="1" Grid.Column="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="25"></RowDefinition>
-                <RowDefinition Height="25"></RowDefinition>
-                <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
             
-            <Label Grid.Row="0" Grid.Column="0" Name="RideYearTotalLbl">Year Total: </Label>
-            <Label Grid.Row="0" Grid.Column="1" Name="RideYearTotalNumberLbl"></Label>
+            <Label Grid.Row="0" Grid.Column="0">Year Total:</Label>
+            <Label Grid.Row="0" Grid.Column="1" Name="RideYearTotalNumberLbl"/>
             
-            <Label Grid.Row="1" Grid.Column="0" Name="CurrentHorseTotalLbl">Horse Total: </Label>
-            <Label Grid.Row="1" Grid.Column="1" Name="CurrentHorseTotalNumberLbl"></Label>
+            <Label Grid.Row="1" Grid.Column="0">Horse Total:</Label>
+            <Label Grid.Row="1" Grid.Column="1" Name="CurrentHorseTotalNumberLbl"/>
             
         </Grid>
     </Grid>
