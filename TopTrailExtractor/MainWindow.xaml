@@ -1,0 +1,79 @@
+﻿<Window x:Class="TopTrailExtractor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Top Trail Extractor" Height="450" Width="600">
+    <Grid Name="WindowGrid" ShowGridLines="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"></ColumnDefinition>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <Button Name="DataUploadBtn"
+                Grid.Row="0" Grid.Column="0"
+                Height="25" Width="90"
+                Click="UploadData" 
+                HorizontalAlignment="Left">
+            File Select
+        </Button>
+        <TextBox Name="FileNameTBox"
+            Grid.Row="0" Grid.Column="0" 
+            Grid.ColumnSpan="2"
+            Height="25" Width="400" 
+            IsReadOnly="True"
+            HorizontalAlignment="Right">
+            
+        </TextBox>
+        <Grid Name="ElementsGrid" ShowGridLines="True" Grid.Column="0" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
+            </Grid.RowDefinitions>
+            
+            <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center">Ride Year:</Label>
+            <ComboBox Grid.Row="0" Grid.Column="1" Name="RideYearCBox"
+                      Width="200"
+                      SelectionChanged="RideYearCBox_SelectionChanged"
+            >
+            </ComboBox>
+            
+            <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">Horse Name:</Label>
+            <ComboBox Name="HorseNameCBox"
+                      Width="200"
+                      SelectionChanged="HorseNameCBox_SelectionChanged"
+                      Grid.Row="1" Grid.Column="1"
+            >
+            </ComboBox>
+        </Grid>
+        
+        <Grid Name="DataElementsGrid" ShowGridLines="True" Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
+            </Grid.RowDefinitions>
+            
+            <Label Grid.Row="0" Grid.Column="0" Name="RideYearTotalLbl">Year Total: </Label>
+            <Label Grid.Row="0" Grid.Column="1" Name="RideYearTotalNumberLbl"></Label>
+            
+            <Label Grid.Row="1" Grid.Column="0" Name="CurrentHorseTotalLbl">Horse Total: </Label>
+            <Label Grid.Row="1" Grid.Column="1" Name="CurrentHorseTotalNumberLbl"></Label>
+            
+        </Grid>
+    </Grid>
+</Window>
